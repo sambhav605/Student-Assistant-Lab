@@ -5,7 +5,15 @@
 #include <iomanip>
 #include <ctime>
 
-// Task Constructor Implementation
+/**
+ * @brief Constructs a Task object with an ID and description.
+ * 
+ * Initializes the task with the given ID and description, and
+ * sets the timestamp to the current date and time.
+ * 
+ * @param taskId The unique identifier for the task.
+ * @param desc The description text of the task.
+ */
 Task :: Task(int taskId, const std::string& desc)
 {
     id = taskId;
@@ -18,15 +26,28 @@ Task :: Task(int taskId, const std::string& desc)
     timestamp.pop_back();
 }
 
-// TaskManager Constructor 
-TaskManager:: TaskManager(const std::string& file)
+/**
+ * @brief Constructs a TaskManager object with a given filename.
+ * 
+ * Initializes the task manager with the specified filename for
+ * loading and saving tasks. Sets the initial task ID counter to 1.
+ * 
+ * @param file The filename to be used for task persistence.
+ *TaskManager:: TaskManager(const std::string& file)
 {
     filename = file;
     nextId = 1;
 }
 
-// functions to get the current timeStamp 
-std::string TaskManager::getCurrentTimestamp(){
+/**
+ * @brief Retrieves the current date and time as a formatted string.
+ * 
+ * Gets the system's current time and converts it to a human-readable
+ * timestamp string. The trailing newline character from ctime() output
+ * is removed before returning.
+ * 
+ * @return std::string The current timestamp in a readable format.
+ */std::string TaskManager::getCurrentTimestamp(){
     std::time_t now =  time(0);
     char* timeStr = std::ctime(&now);
     std::string result = std::string(timeStr);
@@ -34,7 +55,13 @@ std::string TaskManager::getCurrentTimestamp(){
     return result;
 }
 
-// Display the main menu 
+/**
+ * @brief Displays the main menu for the TODO List Manager.
+ * 
+ * This function prints the main options that the user can choose from,
+ * including adding a task, viewing tasks, deleting a task, or exiting the program.
+ * It does not take any parameters and does not return a value.
+ */
 void TaskManager::displayMenu()
 {
     std::cout << "\n==================================" << std::endl;
@@ -47,7 +74,15 @@ void TaskManager::displayMenu()
     std::cout << "==================================" << std::endl;
 }
 
-// Add a new Task 
+/**
+ * @brief Adds a new task to the task list.
+ * 
+ * Creates a new Task object with a unique ID and the provided description,
+ * adds it to the task list, and then saves the updated list to a file.
+ * Also displays confirmation and timestamp of the added task.
+ * 
+ * @param description The description of the task to be added.
+ */
 void TaskManager::addTask(const std::string& description)
 {
     Task newTask(nextId, description);
@@ -61,13 +96,23 @@ void TaskManager::addTask(const std::string& description)
     saveToFile(); // Auto saves after adding
 }
 
-// Load Tasks from file 
+/**
+ * @brief Loads tasks from a file into the task list.
+ * 
+ * Reads each line from the specified file, parses task information (ID, 
+ * description, and timestamp), and reconstructs the tasks. Updates the
+ * task list and sets the next available task ID based on the highest 
+ * loaded ID.
+ * 
+ * If the file does not exist or is empty, it initializes the task list
+ * as empty and prints a message to the console.
+ */
 void TaskManager::loadFromFile()
 {
     std::ifstream file(filename);
     if(!file.is_open())
     {
-        std::cout<<"📁 No existing task file found. Starting with empty list." << std::endl;
+        std::cout<<" No existing task file found. Starting with empty list." << std::endl;
         return ;
     }
     std::string line;
@@ -103,11 +148,18 @@ void TaskManager::loadFromFile()
     nextId = maxId + 1;
     file.close();
 
-    std::cout << "📂 Loaded " << tasks.size() << " tasks from file." << std::endl;
+    std::cout << " Loaded " << tasks.size() << " tasks from file." << std::endl;
 }
 
-//Save tasks to file 
-void TaskManager::saveToFile()
+/**
+ * @brief Saves all current tasks to a file.
+ * 
+ * Writes each task's ID, description, and timestamp to the specified file,
+ * using a pipe (`|`) as a delimiter between fields. Overwrites any existing
+ * file content with the updated task list.
+ * 
+ * If the file cannot be opened, an error message is displayed.
+ */void TaskManager::saveToFile()
 {
     std::ofstream file(filename);
     if(!file.is_open())
@@ -132,19 +184,35 @@ void TaskManager::deleteTask(int taskNumber)
 {
     std::cout<<"this is the simple delete task function";
 }
-//Check if task list is empty 
+
+/**
+ * @brief Checks if the task list is empty.
+ * 
+ * @return true If there are no tasks in the list.
+ * @return false If there is at least one task.
+ */ 
 bool TaskManager::isEmpty() {
     return tasks.empty();
 }
-// Get total number of tasks 
+
+/**
+ * @brief Returns the total number of tasks currently stored.
+ * 
+ * @return int The count of tasks in the task list.
+ */
 int TaskManager:: getTaskCount()
 {
     // here we used the explicit type conversion to convert from unsigned int to regular int
     return static_cast<int>(tasks.size());
 }
 
-// Main program loop - THE HEART OF THE PROGRAM!
-void TaskManager::run()
+/**
+ * @brief The main program loop that runs the TODO List Manager.
+ * 
+ * Loads existing tasks from file and repeatedly displays the main menu,
+ * processes user input for adding, viewing, deleting tasks, or exiting.
+ * Handles input validation and ensures tasks are saved before exit.
+ */void TaskManager::run()
 {
     std::cout << " Welcome to TODO List Manager!" << std::endl;
     std::cout << "Loading your tasks..." << std::endl;
