@@ -33,7 +33,8 @@ Task :: Task(int taskId, const std::string& desc)
  * loading and saving tasks. Sets the initial task ID counter to 1.
  * 
  * @param file The filename to be used for task persistence.
- */TaskManager:: TaskManager(const std::string& file)
+ */
+TaskManager:: TaskManager(const std::string& file)
 {
     filename = file;
     nextId = 1;
@@ -47,7 +48,8 @@ Task :: Task(int taskId, const std::string& desc)
  * is removed before returning.
  * 
  * @return std::string The current timestamp in a readable format.
- */std::string TaskManager::getCurrentTimestamp(){
+ */
+std::string TaskManager::getCurrentTimestamp(){
     std::time_t now =  time(0);
     char* timeStr = std::ctime(&now);
     std::string result = std::string(timeStr);
@@ -176,13 +178,83 @@ void TaskManager::loadFromFile()
     file.close();
 }
 
-// to view tasks 
-void TaskManager::viewTasks(){
-    std::cout<<"this is view tasks function";
+/**
+ * @brief Displays all tasks in the task list.
+ *
+ * This function prints a formatted list of all stored tasks to the standard output.
+ * If the task list is empty, it notifies the user and prompts to add tasks.
+ * Each task is displayed with its index number, description, and timestamp.
+ *
+ * @note Uses standard output for display.
+ */
+void TaskManager::viewTasks() {
+    // ANSI Color Codes
+    const std::string RESET = "\033[0m";
+    const std::string BOLD = "\033[1m";
+    const std::string CYAN = "\033[36m";
+    const std::string GREEN = "\033[32m";
+    const std::string YELLOW = "\033[33m";
+    const std::string BLUE = "\033[34m";
+    const std::string MAGENTA = "\033[35m";
+    const std::string RED = "\033[31m";
+    
+    std::cout << "\n" << CYAN << "╔══════════════════════════════════════════════════════════════════════╗" << RESET << std::endl;
+    std::cout << CYAN << "║" << BOLD << YELLOW << "                           📋 YOUR TASKS                              " << RESET << CYAN << "║" << RESET << std::endl;
+    std::cout << CYAN << "╚══════════════════════════════════════════════════════════════════════╝" << RESET << std::endl;
+    
+    if (isEmpty()) {
+        std::cout << "\n" << RED << "📭 No tasks found! Your list is empty." << RESET << std::endl;
+        std::cout << GREEN << "✨ Add some tasks to get started!" << RESET << std::endl;
+        return;
+    }
+    
+    // Header with colors
+    std::cout << "\n" << BOLD << BLUE << std::left << std::setw(6) << "📌 No." 
+              << std::setw(42) << "📝 Description" 
+              << "📅 Added On" << RESET << std::endl;
+    
+    std::cout << MAGENTA << std::string(75, '-') << RESET << std::endl;
+    
+    // Display tasks with alternating colors
+    for (size_t i = 0; i < tasks.size(); i++) {
+        std::string rowColor = (i % 2 == 0) ? GREEN : YELLOW;
+        
+        std::cout << rowColor << std::left << std::setw(6) << (i + 1) 
+                  << RESET << std::setw(42) << tasks[i].description 
+                  << BLUE << tasks[i].timestamp << RESET << std::endl;
+    }
+    
+    std::cout << MAGENTA << std::string(75, '-') << RESET << std::endl;
+    std::cout << BOLD << GREEN << "📊 Total tasks: " << getTaskCount() << RESET << std::endl;
+    std::cout << CYAN << std::string(71, '=') << RESET << std::endl;
 }
-void TaskManager::deleteTask(int taskNumber)
-{
-    std::cout<<"this is the simple delete task function";
+
+void TaskManager::deleteTask(int taskNumber) {
+    // Validate task number
+    if (taskNumber < 1 || taskNumber > static_cast<int>(tasks.size())) {
+        std::cout << "❌ Invalid task number! Please enter a number between 1 and " 
+                  << tasks.size() << std::endl;
+        return;
+    }
+    
+    // Convert to 0-based index
+    int index = taskNumber - 1;
+    
+    // Store task info for confirmation message
+    std::string deletedDescription = tasks[index].description;
+    int deletedId = tasks[index].id;
+    
+    // Remove the task from vector
+    tasks.erase(tasks.begin() + index);
+    
+    // Save to file after deletion
+    saveToFile();
+    
+    // Confirmation message
+    std::cout << "✓ Task deleted successfully!" << std::endl;
+    std::cout << "Deleted: " << deletedDescription << std::endl;
+    std::cout << "Task ID: " << deletedId << std::endl;
+    std::cout << "Remaining tasks: " << getTaskCount() << std::endl;
 }
 
 /**
