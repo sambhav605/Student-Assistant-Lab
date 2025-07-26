@@ -33,7 +33,7 @@ Task :: Task(int taskId, const std::string& desc)
  * loading and saving tasks. Sets the initial task ID counter to 1.
  * 
  * @param file The filename to be used for task persistence.
- *TaskManager:: TaskManager(const std::string& file)
+ */TaskManager:: TaskManager(const std::string& file)
 {
     filename = file;
     nextId = 1;
