@@ -100,7 +100,6 @@ int main()
             continue;
         }
         std::cin.ignore();
-
         switch (choice)
         {
         case 1:
@@ -175,11 +174,14 @@ int main()
             while (true)
             {
                 utils.printSectionHeader("YOUR ASSIGNMENTS", "[*]");
-                std::cout << CYAN << "1. Add Work" << RESET << std::endl;
-                std::cout << CYAN << "2. Remove Work" << RESET << std::endl;
-                std::cout << CYAN << "3. View Work" << RESET << std::endl;
-                std::cout << CYAN << "4. Mark Task Done" << RESET << std::endl;
-                std::cout << "Choose: ";
+                std::cout << WHITE << "1. Add Work" << RESET << std::endl;
+                std::cout << RED << "2. Remove Work" << RESET << std::endl;
+                std::cout << MAGENTA << "3. View Work" << RESET << std::endl;
+                std::cout << GREEN << "4. Mark Task Done" << RESET << std::endl;
+                std::cout << YELLOW << "5. View stats" << RESET << std::endl;
+                std::cout << CYAN << "6. Exit Back to the Dashboard" << RESET <<std::endl;
+                std::cout<<std::endl;
+                std::cout << CYAN "Choose: ";
                 std::cin >> choice;
                 std::cin.ignore();
 
@@ -193,7 +195,7 @@ int main()
                 else if (choice == 2)
                 {
                     int id;
-                    std::cout << "Enter task ID to remove: ";
+                    std::cout << RED <<BOLD <<"Enter task ID to remove: "<<RESET;
                     std::cin >> id;
                     todo.removeTask(id);
                 }
@@ -204,14 +206,20 @@ int main()
                 else if (choice == 4)
                 {
                     int id;
-                    std::cout << "Enter task ID to mark done: ";
+                    std::cout<< GREEN << "Enter task ID to mark done: ";
                     std::cin >> id;
                     std::cin.ignore();
                     todo.markTaskDone(id);
                 }
+                else if(choice == 5)
+                {
+                    todo.displayStatistics();
+                }
+                else if(choice = 6)
+                {
+                    break;
+                }
             }
-
-            break;
         }
 
         case 5:
