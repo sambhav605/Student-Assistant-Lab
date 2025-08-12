@@ -214,8 +214,13 @@ void Utility::handleTodoMenu(TodoList &todo, Utility &utils) {
                 waitForUserInput();
                 break;
             }
-
-            case 5: {
+            case 5:
+            {
+                todo.displayStatistics();
+                waitForUserInput();
+                break;
+            }
+            case 6: {
                 // Return to main menu
                 utils.printSuccessMessage("[>] Returning to main menu...");
                 SLEEP(800);
@@ -241,7 +246,8 @@ void Utility::displayTodoSubMenu(Utility &utils) {
     std::cout << BG_BLACK << "| " << YELLOW << BOLD << "2." << RESET << BG_BLACK << WHITE << " Remove Task                      " << RESET << BG_BLACK << "|" << RESET << std::endl;
     std::cout << BG_BLACK << "| " << YELLOW << BOLD << "3." << RESET << BG_BLACK << WHITE << " View All Tasks                   " << RESET << BG_BLACK << "|" << RESET << std::endl;
     std::cout << BG_BLACK << "| " << YELLOW << BOLD << "4." << RESET << BG_BLACK << WHITE << " Mark Task as Done               " << RESET << BG_BLACK << "|" << RESET << std::endl;
-    std::cout << BG_BLACK << "| " << RED << BOLD << "5." << RESET << BG_BLACK << BRIGHT_YELLOW << " Return to Main Menu             " << RESET << BG_BLACK << "|" << RESET << std::endl;
+    std::cout << BG_BLACK << "| " << YELLOW << BOLD << "5." << RESET << BG_BLACK << WHITE << " Display Statistics              " << RESET << BG_BLACK << "|" << RESET << std::endl;
+    std::cout << BG_BLACK << "| " << RED << BOLD << "6." << RESET << BG_BLACK << BRIGHT_YELLOW << " Return to Main Menu             " << RESET << BG_BLACK << "|" << RESET << std::endl;
     std::cout << BRIGHT_CYAN << BG_BLACK << "+=========================================+" << RESET << std::endl;
     std::cout << std::endl;
     
