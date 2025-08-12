@@ -22,6 +22,7 @@ public:
     // Statistics and analytics
     TaskStats getStatistics();
     void displayStatistics();
+    bool exportToCSV(const std::string& filename);
 private:
     sqlite3 *db;
     int userId;

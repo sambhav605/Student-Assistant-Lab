@@ -1,6 +1,7 @@
 #include "TodoList.h"
 #include <iostream>
 #include<iomanip>
+#include <fstream>
 
 const std::string RESET = "\033[0m";
 const std::string BOLD = "\033[1m";
@@ -163,4 +164,29 @@ void TodoList::displayStatistics() {
     std::cout << "  " << std::fixed << std::setprecision(1) 
               << completedPercent << "% done, "
               << pendingPercent << "% pending\n";
+}
+bool TodoList::exportToCSV(const std::string& filename) {
+    std::ofstream file(filename);
+    
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file for writing: " << filename << std::endl;
+        return false;
+    }
+    
+    // Write CSV header
+    file << "ID,Description,Timestamp,Completed,Priority,Category\n";
+    
+    std::vector<Task> allTasks = getTasksFromDB();
+    
+    for (const auto& task : allTasks) {
+        file << task.id << ","
+             << "\"" << task.description << "\","
+             << "\"" << task.timestamp << "\","
+             << (task.completed ? "Yes" : "No") << ","
+             << task.priority << ","
+             << task.category << "\n";
+    }
+    
+    file.close();
+    return true;
 }
