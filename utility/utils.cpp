@@ -423,7 +423,7 @@ void Utility::displayTodoSubMenu(Utility &utils)
     std::cout << BRIGHT_CYAN << BG_BLACK << "+=========================================+" << RESET << std::endl;
     std::cout << std::endl;
 
-    utils.printInputPrompt("Choose an option (1-5): ", "[>]");
+    utils.printInputPrompt("Choose an option (1-7): ", "[>]");
 }
 
 bool Utility::getUserRegistration(UserAuth &auth, Utility &utils)
